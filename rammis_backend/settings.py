@@ -30,15 +30,29 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'accounts',
+    "corsheaders",
 ]
+
+# SIMPLE_JWT configuration
+from datetime import timedelta
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,3 +139,16 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.StaffUser"
+
+# CORS config — allow your frontend origin and allow credentials
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Next.js dev server
+    # add production origin(s) later
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# Trust the frontend as CSRF origin (for strict CSRF mode)
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
