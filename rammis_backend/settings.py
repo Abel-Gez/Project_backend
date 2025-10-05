@@ -29,17 +29,31 @@ INSTALLED_APPS = [
     #3rd party
     'rest_framework',
     'rest_framework_simplejwt',
-    'accounts',
     "corsheaders",
+    'accounts',
+    'comments',
+      'blog',
+      'currency',
+      'bank_account',
+      'vacancy',
 ]
 
-# SIMPLE_JWT configuration
+# settings.py
+
 from datetime import timedelta
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
+
+    # Cookie settings
+    "AUTH_COOKIE": "refresh_token",             # Cookie name
+    "AUTH_COOKIE_SECURE": False,               # Must be False for HTTP (local dev)
+    "AUTH_COOKIE_HTTP_ONLY": True,             # Prevent JS access to cookie
+    "AUTH_COOKIE_PATH": "/api/auth/",          # Cookie only sent for auth routes
+    "AUTH_COOKIE_SAMESITE": "Lax",             # Allow cross-site requests from localhost
 }
 
 REST_FRAMEWORK = {
@@ -152,3 +166,5 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+

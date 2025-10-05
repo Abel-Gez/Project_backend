@@ -1,0 +1,32 @@
+VACANCY FORM
+
+const jobOpenings = [
+    {
+      id: 1,
+      title: "Senior Islamic Banking Specialist",
+      department: "Banking Operations",
+      location: "Addis Ababa",
+      type: "Full-time",
+      experience: "5+ years",
+      education: "Bachelor's degree in Finance or related field",
+      salary: "Competitive",
+      deadline: "2024-02-15",
+      description:
+        "We are seeking an experienced Islamic Banking Specialist to join our growing team. The ideal candidate will have deep knowledge of Sharia principles and Islamic banking products.",
+      requirements: [
+        "Bachelor's degree in Finance, Economics, or Islamic Studies",
+        "Minimum 5 years experience in Islamic banking",
+        "Strong knowledge of Sharia principles and Islamic finance",
+        "Excellent communication skills in Amharic and English",
+        "Professional certification in Islamic banking preferred",
+      ],
+      responsibilities: [
+        "Develop and manage Islamic banking products",
+        "Ensure all products comply with Sharia principles",
+        "Provide expert advice to customers on Islamic finance",
+        "Train and mentor junior staff members",
+        "Collaborate with Sharia board on product development",
+      ],
+      applications: 45,
+      status: "active",
+    },

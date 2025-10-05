@@ -3,15 +3,13 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
 from .models import StaffUser
+from bank_account.admin import BranchManagerProfileInline  # import the inline
 
-
+# -----------------------------
+# StaffUser Creation Form
+# -----------------------------
 class StaffUserCreationForm(forms.ModelForm):
-    """
-    A form for creating new staff users. Includes all required
-    fields, plus repeated password fields for confirmation.
-    """
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Password confirmation", widget=forms.PasswordInput)
 
@@ -35,11 +33,10 @@ class StaffUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
-
+# -----------------------------
+# StaffUser Change Form
+# -----------------------------
 class StaffUserChangeForm(forms.ModelForm):
-    """
-    A form for updating existing staff users. Shows hashed password as read-only.
-    """
     password = ReadOnlyPasswordHashField(label="Password")
 
     class Meta:
@@ -57,16 +54,14 @@ class StaffUserChangeForm(forms.ModelForm):
         )
 
     def clean_password(self):
-        # Always return the initial value. This prevents changing the password from the admin change view.
         return self.initial.get("password")
 
 
+# -----------------------------
+# StaffUser Admin
+# -----------------------------
 @admin.register(StaffUser)
 class StaffUserAdmin(DjangoUserAdmin):
-    """
-    Custom Admin for the StaffUser model.
-    Uses StaffUserChangeForm for editing and StaffUserCreationForm for adding.
-    """
     form = StaffUserChangeForm
     add_form = StaffUserCreationForm
     model = StaffUser
@@ -81,15 +76,7 @@ class StaffUserAdmin(DjangoUserAdmin):
         ("Profile", {"fields": ("role",)}),
         (
             "Permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                )
-            },
+            {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")},
         ),
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
@@ -106,3 +93,7 @@ class StaffUserAdmin(DjangoUserAdmin):
 
     readonly_fields = ("last_login", "date_joined")
     filter_horizontal = ("groups", "user_permissions")
+
+    # Include the BranchManagerProfile inline
+    inlines = [BranchManagerProfileInline]
+

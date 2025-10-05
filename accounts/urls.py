@@ -4,6 +4,7 @@ from .views import (
     CookieTokenRefreshView,
     LogoutView,
     StaffCreateView,
+    MeView,
 )
 
 urlpatterns = [
@@ -15,6 +16,8 @@ urlpatterns = [
 
     # Logout (clears refresh cookie)
     path('logout/', LogoutView.as_view(), name='logout'),
+
+    path('me/', MeView.as_view(), name='me'), 
 
     # Staff creation endpoint
     path('staff/create/', StaffCreateView.as_view(), name='staff-create'),
