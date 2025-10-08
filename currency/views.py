@@ -18,7 +18,10 @@ class ExchangeRateViewSet(viewsets.ModelViewSet):
     """
     queryset = ExchangeRate.objects.all()
     serializer_class = ExchangeRateSerializer
-    permission_classes = [RolePermission(required_roles=["MARKETING"])]  # default for restricted actions
+
+    # ✅ Set RolePermission without arguments
+    permission_classes = [RolePermission]
+    required_roles = ["MARKETING"]  # set roles as a class attribute
 
     def get_permissions(self):
         """
@@ -26,11 +29,10 @@ class ExchangeRateViewSet(viewsets.ModelViewSet):
         """
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
-        return super().get_permissions()  # keeps your existing RolePermission for other actions
+        return super().get_permissions()  # keeps RolePermission for other actions
 
     @action(detail=False, methods=['post'], url_path='bulk-create')
     def bulk_create(self, request):
-        # ... all existing bulk_create code remains unchanged ...
         payload = request.data
         base_currency = payload.get('base_currency', 'ETB')
         effective_date = payload.get('effective_date')
@@ -66,11 +68,11 @@ class ExchangeRateViewSet(viewsets.ModelViewSet):
             objs = []
             for item in validated_items:
                 objs.append(ExchangeRate(
-                    base_currency = item.get('base_currency').upper(),
-                    currency = item.get('currency').upper(),
-                    effective_date = item.get('effective_date'),
-                    buying = Decimal(str(item.get('buying'))),
-                    selling = Decimal(str(item.get('selling'))),
+                    base_currency=item.get('base_currency').upper(),
+                    currency=item.get('currency').upper(),
+                    effective_date=item.get('effective_date'),
+                    buying=Decimal(str(item.get('buying'))),
+                    selling=Decimal(str(item.get('selling'))),
                 ))
             ExchangeRate.objects.bulk_create(objs)
 

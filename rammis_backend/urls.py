@@ -9,7 +9,7 @@ urlpatterns = [
      path("api/v1/", include("blog.urls")),      # blog API
      path("api/v1/", include("currency.urls")),
      path("api/v1/", include("bank_account.urls")),
-     path('api/vacancy/', include('vacancy.urls')),     # HR vacancy app
+     path('api/', include('vacancy.urls')),     # HR vacancy app
 
 
 

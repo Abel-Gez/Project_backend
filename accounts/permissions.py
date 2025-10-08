@@ -1,24 +1,24 @@
 # accounts/permissions.py
 from rest_framework.permissions import BasePermission
-
 from accounts.models import StaffUser
 
 class RolePermission(BasePermission):
     """
-    Flexible permission class for role-based access.
-    Usage in views: permission_classes = [RolePermission(required_roles=["HR"])]
+    Allow access only if request.user.role is in required_roles.
     """
-    message = "You do not have permission to perform this action."
 
-    def __init__(self, required_roles=None):
-        self.required_roles = required_roles or []
+    required_roles = []
 
     def has_permission(self, request, view):
-        return (
-            request.user
-            and request.user.is_authenticated
-            and request.user.role in self.required_roles
-        )
+        # Check authentication first
+        if not request.user or not request.user.is_authenticated:
+            return False
+
+        # Get roles from view if available
+        roles = getattr(view, "required_roles", self.required_roles)
+        user_role = getattr(request.user, "role", "").strip().upper()
+        return user_role in [r.upper() for r in roles]
+
 
 class IsAdminUserRole(BasePermission):
     """

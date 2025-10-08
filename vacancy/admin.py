@@ -1,5 +1,14 @@
 from django.contrib import admin
-from .models import VacancyApplication
+from .models import Vacancy, VacancyApplication
+
+@admin.register(Vacancy)
+class VacancyAdmin(admin.ModelAdmin):
+    list_display = ('title', 'location', 'category', 'employment_type', 'is_active', 'posted_at')
+    list_filter = ('category', 'employment_type', 'is_active')
+    search_fields = ('title', 'location', 'category')
+    readonly_fields = ('posted_at', 'updated_at')
+    ordering = ('-posted_at',)
+
 
 @admin.register(VacancyApplication)
 class VacancyApplicationAdmin(admin.ModelAdmin):

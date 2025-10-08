@@ -38,7 +38,6 @@ INSTALLED_APPS = [
       'vacancy',
 ]
 
-# settings.py
 
 from datetime import timedelta
 
@@ -53,8 +52,32 @@ SIMPLE_JWT = {
     "AUTH_COOKIE_SECURE": False,               # Must be False for HTTP (local dev)
     "AUTH_COOKIE_HTTP_ONLY": True,             # Prevent JS access to cookie
     "AUTH_COOKIE_PATH": "/api/auth/",          # Cookie only sent for auth routes
-    "AUTH_COOKIE_SAMESITE": "Lax",             # Allow cross-site requests from localhost
+    "AUTH_COOKIE_SAMESITE": "None",             # Allow cross-site requests from localhost
 }
+
+CSRF_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS config — allow your frontend origin and allow credentials
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Next.js dev server
+    "http://127.0.0.1:3000",
+    # "http://192.168.1.48:3000",  # your office IP or LAN address
+
+    # add production origin(s) later
+]
+
+# Trust the frontend as CSRF origin (for strict CSRF mode)
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    # "http://192.168.1.48:3000", 
+]
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -154,17 +177,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "accounts.StaffUser"
 
-# CORS config — allow your frontend origin and allow credentials
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Next.js dev server
-    # add production origin(s) later
-]
 
-CORS_ALLOW_CREDENTIALS = True
-
-# Trust the frontend as CSRF origin (for strict CSRF mode)
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-]
 
 

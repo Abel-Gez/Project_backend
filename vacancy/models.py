@@ -6,7 +6,37 @@ GENDER_CHOICES = [
     ('female', 'Female'),
 ]
 
+class Vacancy(models.Model):
+    """
+    Represents a job post/position that HR can manage.
+    """
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    location = models.CharField(max_length=255)
+    category = models.CharField(max_length=255, blank=True, null=True)
+    employment_type = models.CharField(
+        max_length=50,
+        choices=[('full-time','Full-time'), ('part-time','Part-time'), ('contract','Contract')],
+        default='full-time'
+    )
+    posted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.location}"
+
+
 class VacancyApplication(models.Model):
+    # Link to Vacancy
+    vacancy = models.ForeignKey(
+        Vacancy, 
+        on_delete=models.CASCADE, 
+        related_name='applications',
+        null=True,  # for existing records without a vacancy yet
+        blank=True
+    )
+
     # Mandatory fields
     full_name = models.CharField(max_length=255)
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
